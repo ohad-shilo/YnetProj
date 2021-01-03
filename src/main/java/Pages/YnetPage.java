@@ -9,16 +9,19 @@ import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 
 import java.util.List;
+import java.util.logging.Level;
 
 public class YnetPage extends BasePage implements CommomConstants {
 
     private By by;
     private WebElement webElement;
+    private LoogerProj loogerProj = new LoogerProj();
 
     /**
      * Go to Ynetnews and verfiy the page title
      */
     public void gotoSite() {
+        loogerProj.addLog(Level.INFO,"Start: gotoSite");
         //Search for Ynetnews
         by = By.xpath(GOOGLE_SEARCH_XPATH);
         webElement = driver.findElement(by);
@@ -39,6 +42,7 @@ public class YnetPage extends BasePage implements CommomConstants {
     }
 
     public void gotoYentNews(){
+        loogerProj.addLog(Level.INFO,"Start: gotoYentNews");
         this.NavigateTo(URL_YNET_NEWS);
         this.waitForPageLoad();
     }
@@ -49,6 +53,7 @@ public class YnetPage extends BasePage implements CommomConstants {
      */
     public String getTemperature()
     {
+        loogerProj.addLog(Level.INFO,"Start: getTemperature");
         by = By.xpath(WEATHER_XPATH);
         webElement = driver.findElement(by);
         return webElement.getText();
@@ -59,10 +64,12 @@ public class YnetPage extends BasePage implements CommomConstants {
      */
     public void checkWeather()
     {
+        loogerProj.addLog(Level.INFO,"Start: checkWeather");
         int weather_TLV=0, weather_Eilat=0;
         String str;
 
         str = getTemperature();
+        loogerProj.addLog(Level.INFO,"The Weather in Tel Eilat is: " + str);
         System.out.println("The Weather in Tel Aviv is: " + str);
         weather_TLV = Integer.parseInt(str.substring(0,str.length()-1));
 
@@ -70,6 +77,7 @@ public class YnetPage extends BasePage implements CommomConstants {
         webElement = driver.findElement(by);
         webElement.click();
         str = getTemperature();
+        loogerProj.addLog(Level.INFO,"The Weather in Tel Eilat is: " + str);
         System.out.println("The Weather in Tel Eilat is: " + str);
         weather_Eilat = Integer.parseInt(str.substring(0,str.length()-1));
 
@@ -78,13 +86,13 @@ public class YnetPage extends BasePage implements CommomConstants {
             ReportSuccess("The temperature in Eilat is: "+ weather_Eilat + ", and it higher than the temperature in TLV: " + weather_TLV);
         }
         else {
-            //ReportError
-            ReportSuccess("The temperature in Eilat is: "+ weather_Eilat + ", and it is NOT higher than the temperature in TLV: " + weather_TLV);
+            ReportError("The temperature in Eilat is: "+ weather_Eilat + ", and it is NOT higher than the temperature in TLV: " + weather_TLV);
         }
     }
 
     public void pageResolution ()
     {
+        loogerProj.addLog(Level.INFO,"Start: pageResolution");
         Dimension dimension = driver.manage().window().getSize();
         System.out.println("The page size before the change is, High:" +dimension.height + " ,Width " + dimension.width) ;
 
@@ -94,6 +102,7 @@ public class YnetPage extends BasePage implements CommomConstants {
     }
 
     public void openArticle()throws InterruptedException{
+        loogerProj.addLog(Level.INFO,"Start: openArticle");
         Thread.sleep(1000);
         List<WebElement> list =  driver.findElements(By.className("imageView"));
         list.get(3).click();
@@ -101,6 +110,7 @@ public class YnetPage extends BasePage implements CommomConstants {
     }
 
     public void choiceArticle() throws InterruptedException {
+        loogerProj.addLog(Level.INFO,"Start: choiceArticle");
         webElement = driver.findElement(By.partialLinkText("Magazine"));
         webElement.click();
         this.waitForPageLoad();
@@ -109,6 +119,7 @@ public class YnetPage extends BasePage implements CommomConstants {
     }
 
     public void sendToFriend() throws InterruptedException {
+        loogerProj.addLog(Level.INFO,"Start: sendToFriend");
         this.openArticle();
         Thread.sleep(1000);
        webElement = driver.findElement(By.className("ArticleSideShareComponent_mailto"));
@@ -120,6 +131,11 @@ public class YnetPage extends BasePage implements CommomConstants {
         else {
             ReportError ("Send To Friend link is not exist in the page");
         }
+    }
+
+    public void seeTestFailed()
+    {
+        Verify_Title_Text("Test Error");
     }
 
     public void facebook()
