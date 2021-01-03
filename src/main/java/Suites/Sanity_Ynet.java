@@ -2,12 +2,16 @@ package Suites;
 
 import Infra.CommomConstants;
 import Infra.CommonAuto;
+import Infra.Listeners.ListenerTest;
+import Pages.CountriesPage;
 import Pages.LinkedinPage;
 import Pages.YnetPage;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
+@Listeners(ListenerTest.class)
 public class Sanity_Ynet extends CommonAuto implements CommomConstants {
 
     @BeforeClass(groups = {"SmokeTest", "RegressionTest"})
@@ -22,6 +26,8 @@ public class Sanity_Ynet extends CommonAuto implements CommomConstants {
 
     CommonAuto commonAuto = new CommonAuto();
     YnetPage ynetPage = new YnetPage();
+
+
 
     @Test(priority = 10, groups = {"SmokeTest", "RegressionTest"}, description = "Test-P10")
     public void gotoYnet() throws InterruptedException {
@@ -38,7 +44,7 @@ public class Sanity_Ynet extends CommonAuto implements CommomConstants {
 
     @Test(priority = 30, groups = {"SmokeTest", "RegressionTest"}, description = "Test-P30")
     public void updateThePageResolution() throws InterruptedException {
-        commonAuto.NavigateTo("https://www.ynetnews.com/magazine");
+        commonAuto.NavigateTo(URL_YNET_MAGAZINE);
         ynetPage.pageResolution();
     }
 
@@ -48,10 +54,15 @@ public class Sanity_Ynet extends CommonAuto implements CommomConstants {
         ynetPage.choiceArticle();
     }
 
-    @Test(priority = 5, groups = {"SmokeTest", "RegressionTest"}, description = "Test-P50")
+    @Test(priority = 50, groups = {"SmokeTest", "RegressionTest"}, description = "Test-P50")
     public void sendToFriend() throws InterruptedException {
-        commonAuto.NavigateTo("https://www.ynetnews.com/magazine");
+        commonAuto.NavigateTo(URL_YNET_MAGAZINE);
         ynetPage.sendToFriend();
     }
 
+    @Test(priority = 60, groups = {"SmokeTest", "RegressionTest"}, description = "Test-P60")
+    public void seeTestFailed() throws InterruptedException {
+        commonAuto.NavigateTo(URL_YNET_MAGAZINE);
+        ynetPage.seeTestFailed();
+    }
 }
